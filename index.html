@@ -1,0 +1,2930 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide de Révision - Algorithmique</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .progress-section {
+            padding: 30px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .progress-bar-container {
+            background: #e9ecef;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            width: 0%;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .stat-item {
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .score-badge {
+            font-size: 1.8em;
+            color: #667eea;
+        }
+
+        .score-badge .total {
+            font-size: 0.7em;
+            color: #6c757d;
+        }
+
+        .stat-item:nth-child(3) .stat-number {
+            color: #ffc107;
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .daily-goal-banner {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-top: 15px;
+            border-radius: 10px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            border-left: 4px solid #667eea;
+            padding-left: 20px;
+        }
+
+        .section-title {
+            font-size: 1.4em;
+            color: #2d3748;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-icon {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .checklist-item {
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .checklist-item:hover {
+            background: #e9ecef;
+        }
+
+        .checklist-item.checked {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .checklist-item.failed {
+            background: #fff3cd;
+            border-color: #ffc107;
+        }
+
+        .item-header {
+            display: flex;
+            align-items: start;
+        }
+
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #667eea;
+            border-radius: 6px;
+            margin-right: 15px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item.checked .checkbox {
+            background: #28a745;
+            border-color: #28a745;
+        }
+
+        .checklist-item.failed .checkbox {
+            background: #ffc107;
+            border-color: #ffc107;
+        }
+
+        .checkmark,
+        .failmark {
+            display: none;
+            color: white;
+            font-weight: bold;
+        }
+
+        .checklist-item.checked .checkmark {
+            display: block;
+        }
+
+        .checklist-item.failed .failmark {
+            display: block;
+        }
+
+        .item-text {
+            flex: 1;
+            color: #2d3748;
+            line-height: 1.6;
+        }
+
+        .item-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.8em;
+            margin-right: 8px;
+        }
+
+        .difficulty {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .difficulty.easy {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .difficulty.medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .difficulty.hard {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            margin-left: 39px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: #000;
+        }
+
+        .btn-help {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-algo {
+            background: #6f42c1;
+            color: white;
+        }
+
+        .btn-python {
+            background: #fd7e14;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+            transform: scale(1.05);
+        }
+
+        .btn-warning:hover {
+            background: #e0a800;
+            transform: scale(1.05);
+        }
+
+        .btn-help:hover {
+            background: #138496;
+            transform: scale(1.05);
+        }
+
+        .btn-algo:hover {
+            background: #5a32a3;
+            transform: scale(1.05);
+        }
+
+        .btn-python:hover {
+            background: #e8690a;
+            transform: scale(1.05);
+        }
+
+        .note-section,
+        .help-section,
+        .algo-section,
+        .python-section {
+            margin-top: 10px;
+            margin-left: 39px;
+            display: none;
+        }
+
+        .note-section.show,
+        .help-section.show,
+        .algo-section.show,
+        .python-section.show {
+            display: block;
+        }
+
+        .note-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ffc107;
+            border-radius: 6px;
+            font-size: 0.9em;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .note-input:focus {
+            outline: none;
+            border-color: #ff9800;
+        }
+
+        .note-label {
+            font-weight: bold;
+            color: #856404;
+            font-size: 0.85em;
+            margin-bottom: 5px;
+        }
+
+        .help-section {
+            background: #d1ecf1;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #17a2b8;
+        }
+
+        .help-title {
+            font-weight: bold;
+            color: #0c5460;
+            font-size: 0.9em;
+            margin-bottom: 8px;
+        }
+
+        .help-content {
+            color: #0c5460;
+            font-size: 0.85em;
+            line-height: 1.6;
+        }
+
+        .help-content ul {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+
+        .help-content li {
+            margin-bottom: 5px;
+        }
+
+        /* ===== ONGLETS CORRIGÉS ===== */
+        .corrige-panel {
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #dee2e6;
+        }
+
+        .corrige-panel.algo-panel {
+            border-color: #6f42c1;
+        }
+
+        .corrige-panel.python-panel {
+            border-color: #fd7e14;
+        }
+
+        .algo-panel .corrige-header {
+            background: #6f42c1;
+            color: white;
+        }
+
+        .python-panel .corrige-header {
+            background: #fd7e14;
+            color: white;
+        }
+
+        .corrige-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 8px 12px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .corrige-body {
+            background: #f8f8f2;
+            padding: 0;
+            position: relative;
+        }
+
+        pre.code-block {
+            margin: 0;
+            padding: 15px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.82em;
+            line-height: 1.7;
+            overflow-x: auto;
+            white-space: pre;
+            color: #2d2d2d;
+        }
+
+        /* Bouton copier */
+        .copy-btn {
+            background: rgba(255, 255, 255, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.78em;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.45);
+        }
+
+        .copy-btn.copied {
+            background: #28a745;
+            border-color: #28a745;
+        }
+
+        /* Coloration syntaxique algo — fond clair */
+        .kw-algo {
+            color: #7c3aed;
+            font-weight: bold;
+        }
+
+        /* mots-clés */
+        .kw-type {
+            color: #0891b2;
+        }
+
+        /* types */
+        .kw-fn {
+            color: #16a34a;
+            font-weight: bold;
+        }
+
+        /* nom fonction/procédure */
+        .kw-val {
+            color: #ea580c;
+        }
+
+        /* valeurs/retour */
+        .kw-comment {
+            color: #9ca3af;
+            font-style: italic;
+        }
+
+        /* Coloration syntaxique Python — fond clair */
+        .py-kw {
+            color: #7c3aed;
+            font-weight: bold;
+        }
+
+        /* def, return, for, while... */
+        .py-fn {
+            color: #16a34a;
+            font-weight: bold;
+        }
+
+        /* nom de fonction */
+        .py-str {
+            color: #b45309;
+        }
+
+        /* chaînes */
+        .py-num {
+            color: #ea580c;
+        }
+
+        /* nombres */
+        .py-comment {
+            color: #9ca3af;
+            font-style: italic;
+        }
+
+        .py-builtin {
+            color: #0891b2;
+        }
+
+        /* int, str, len, range... */
+
+        .tips-section {
+            background: #e7f3ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border-left: 4px solid #0066cc;
+        }
+
+        .tips-title {
+            font-size: 1.2em;
+            color: #0066cc;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .tips-section ul {
+            padding-left: 20px;
+        }
+
+        .tips-section li {
+            margin-bottom: 8px;
+            color: #2d3748;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer {
+            background: #2d3748;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-top: 3px solid #667eea;
+        }
+
+        .footer p {
+            margin: 5px 0;
+            font-size: 0.95em;
+        }
+
+        .footer-subtitle {
+            font-size: 0.85em;
+            opacity: 0.8;
+        }
+
+        @media print {
+
+            .action-buttons,
+            .btn-help,
+            .btn-algo,
+            .btn-python {
+                display: none;
+            }
+
+            body {
+                background: white;
+            }
+
+            .container {
+                box-shadow: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .stats {
+                gap: 15px;
+            }
+
+            .action-buttons,
+            .item-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="logo-abn.png" alt="logo ABN" style="height: 160px; margin-top: 15px;">
+            <h1>📚 Guide de Révision - 3SI</h1>
+            <p>Algorithmique et Programmation - Premier Trimestre</p>
+        </div>
+
+        <div class="progress-section">
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar">0%</div>
+            </div>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number score-badge"><span id="scoreDisplay">0</span><span class="total">/30</span>
+                    </div>
+                    <div class="stat-label">📊 Score</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="completedCount">0</div>
+                    <div class="stat-label">✓ Réussis</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="failedCount">0</div>
+                    <div class="stat-label">⚠ À revoir</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="dailyGoal">0/5</div>
+                    <div class="stat-label">🎯 Objectif quotidien</div>
+                </div>
+            </div>
+            <div class="daily-goal-banner" id="goalBanner" style="display: none;">
+                🎉 Objectif quotidien atteint ! Excellent travail !
+            </div>
+        </div>
+
+        <div class="content">
+
+            <!-- ===== SECTION A ===== -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">A</span>
+                    Manipulation et validation de chaînes
+                </h2>
+
+                <!-- Q1 -->
+                <div class="checklist-item" data-id="1" data-help="Utiliser une fonction prédéfinie.">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q1</span>Saisir une chaîne composée uniquement
+                            de chiffres<span class="difficulty easy">Facile</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-algo">Procédure</span> <span class="kw-fn">saisir</span>(@ch : <span class="kw-type">chaîne</span>)
+<span class="kw-algo">Début</span>
+    <span class="kw-algo">Répéter</span>
+        <span class="kw-algo">Écrire</span>(<span class="kw-val">"Saisir une chaîne de chiffres : "</span>)
+        <span class="kw-algo">Lire</span>(ch)
+    <span class="kw-algo">Jusqu'à</span> Estnum(ch)
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-kw">def</span> <span class="py-fn">saisir</span>():
+    ch = <span class="py-builtin">input</span>(<span class="py-str">"Saisir une chaîne de chiffres : "</span>)
+    <span class="py-kw">while not</span> ch.isdecimal():
+        ch = <span class="py-builtin">input</span>(<span class="py-str">"Saisir une chaîne de chiffres : "</span>)
+    <span class="py-kw">return</span> ch</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="checklist-item" data-id="2"
+                    data-help="Parcourir la chaîne caractère par caractère.|Vérifier si c'est une lettre ou un espace.|Vous pouvez utiliser Majus() pour convertir et tester si c'est entre 'A' et 'Z'.">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q2</span>Saisir une chaîne composée uniquement
+                            de lettres et d'espaces<span class="difficulty easy">Facile</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-algo">Procédure</span> <span class="kw-fn">saisir</span>(@ch : <span class="kw-type">chaîne</span>)
+<span class="kw-algo">Début</span>
+    <span class="kw-algo">Répéter</span>
+        <span class="kw-algo">Écrire</span>(<span class="kw-val">"Saisir une chaîne : "</span>)
+        <span class="kw-algo">Lire</span>(ch)
+    <span class="kw-algo">Jusqu'à</span> verif_lettres_espace(ch)
+<span class="kw-algo">Fin</span>
+
+<span class="kw-algo">Fonction</span> <span class="kw-fn">verif_lettres_espace</span>(ch : <span class="kw-type">chaîne</span>) : <span class="kw-type">booléen</span>
+<span class="kw-algo">Début</span>
+    ch ← Majus(ch)
+    ok ← <span class="kw-val">Vrai</span>
+    i ← <span class="kw-val">0</span>
+    <span class="kw-algo">Tant que</span> (i &lt; Long(ch)) <span class="kw-algo">Et</span> ok <span class="kw-algo">Faire</span>
+        <span class="kw-algo">Si</span> (ch[i] ∈ [<span class="kw-val">"A"</span>..<span class="kw-val">"Z"</span>]) <span class="kw-algo">Ou</span> (ch[i] = <span class="kw-val">" "</span>) <span class="kw-algo">Alors</span>
+            i ← i + <span class="kw-val">1</span>
+        <span class="kw-algo">Sinon</span>
+            ok ← <span class="kw-val">Faux</span>
+        <span class="kw-algo">FinSi</span>
+    <span class="kw-algo">Fin Tant que</span>
+    <span class="kw-algo">Retourner</span> ok
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-kw">def</span> <span class="py-fn">saisir</span>():
+    ch = <span class="py-builtin">input</span>(<span class="py-str">"Saisir une chaîne : "</span>)
+    <span class="py-kw">while not</span> verif_lettres_espace(ch):
+        ch = <span class="py-builtin">input</span>(<span class="py-str">"Saisir une chaîne : "</span>)
+    <span class="py-kw">return</span> ch
+
+<span class="py-kw">def</span> <span class="py-fn">verif_lettres_espace</span>(ch):
+    ch = ch.upper()
+    Ok = <span class="py-kw">True</span>
+    i = <span class="py-num">0</span>
+    <span class="py-kw">while</span> (i &lt; <span class="py-builtin">len</span>(ch)) <span class="py-kw">and</span> Ok:
+        <span class="py-kw">if</span> <span class="py-str">"A"</span> &lt;= ch[i] &lt;= <span class="py-str">"Z"</span> <span class="py-kw">or</span> ch[i] == <span class="py-str">" "</span>:
+            i = i + <span class="py-num">1</span>
+        <span class="py-kw">else</span>:
+            Ok = <span class="py-kw">False</span>
+    <span class="py-kw">return</span> Ok</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="checklist-item" data-id="3"
+                    data-help="Vérifier que la chaîne ne commence ni ne se termine par un espace.|Compter le nombre de mots (par exemple en recherchant les espaces entre les mots).|Valider la saisie seulement si au moins deux mots sont présents.">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q3</span>Saisir une chaîne avec au moins deux
+                            mots (sans espaces au début/fin)<span class="difficulty medium">Moyen</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-algo">Procédure</span> <span class="kw-fn">saisir</span>(@ch : <span class="kw-type">chaîne</span>)
+<span class="kw-algo">Début</span>
+    <span class="kw-algo">Répéter</span>
+        <span class="kw-algo">Écrire</span>(<span class="kw-val">"Saisir une chaîne (au moins 2 mots) : "</span>)
+        <span class="kw-algo">Lire</span>(ch)
+    <span class="kw-algo">Jusqu'à</span> (ch[<span class="kw-val">0</span>] ≠ <span class="kw-val">" "</span>) <span class="kw-algo">Et</span> (ch[Long(ch)-<span class="kw-val">1</span>] ≠ <span class="kw-val">" "</span>) <span class="kw-algo">Et</span> (nb_mots(ch) ≥ <span class="kw-val">2</span>)
+<span class="kw-algo">Fin</span>
+
+<span class="kw-algo">Fonction</span> <span class="kw-fn">nb_mots</span>(ch : <span class="kw-type">chaîne</span>) : <span class="kw-type">entier</span>
+<span class="kw-algo">Début</span>
+    nb ← <span class="kw-val">0</span>
+    <span class="kw-algo">Pour</span> i <span class="kw-algo">de</span> <span class="kw-val">0</span> <span class="kw-algo">à</span> Long(ch) - <span class="kw-val">2</span> <span class="kw-algo">Faire</span>
+        <span class="kw-algo">Si</span> (ch[i] = <span class="kw-val">" "</span>) <span class="kw-algo">Et</span> (ch[i+<span class="kw-val">1</span>] ≠ <span class="kw-val">" "</span>) <span class="kw-algo">Alors</span>
+            nb ← nb + <span class="kw-val">1</span>
+        <span class="kw-algo">FinSi</span>
+    <span class="kw-algo">Fin Pour</span>
+    <span class="kw-algo">Retourner</span> nb + <span class="kw-val">1</span>
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-kw">def</span> <span class="py-fn">saisir</span>():
+    ch = <span class="py-builtin">input</span>(<span class="py-str">"Saisir une chaîne (au moins 2 mots) : "</span>)
+    <span class="py-kw">while not</span> (ch[<span class="py-num">0</span>] != <span class="py-str">" "</span> <span class="py-kw">and</span> ch[-<span class="py-num">1</span>] != <span class="py-str">" "</span> <span class="py-kw">and</span> nb_mots(ch) >= <span class="py-num">2</span>):
+        ch = <span class="py-builtin">input</span>(<span class="py-str">"Saisir une chaîne (au moins 2 mots) : "</span>)
+    <span class="py-kw">return</span> ch
+
+<span class="py-kw">def</span> <span class="py-fn">nb_mots</span>(ch):
+    nb = <span class="py-num">0</span>
+    <span class="py-kw">for</span> i <span class="py-kw">in</span> <span class="py-builtin">range</span>(<span class="py-builtin">len</span>(ch) - <span class="py-num">1</span>):
+        <span class="py-kw">if</span> ch[i] == <span class="py-str">" "</span> <span class="py-kw">and</span> ch[i+<span class="py-num">1</span>] != <span class="py-str">" "</span>:
+            nb = nb + <span class="py-num">1</span>
+    <span class="py-kw">return</span> nb + <span class="py-num">1</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Q4 -->
+                <div class="checklist-item" data-id="4"
+                    data-help="Longueur = 10 caractères.|Chaque caractère doit être alphanumérique.|Comparer chaque caractère avec tous les précédents.(vous pouvez utiliser une fonction prédéfinie).">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q4</span>Saisir une chaîne de dix caractères
+                            alphanumériques distincts<span class="difficulty medium">Moyen</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-algo">Procédure</span> <span class="kw-fn">saisir</span>(@ch : <span class="kw-type">chaîne</span>)
+<span class="kw-algo">Début</span>
+    <span class="kw-algo">Répéter</span>
+        <span class="kw-algo">Écrire</span>(<span class="kw-val">"Saisir 10 caractères alphanumériques distincts : "</span>)
+        <span class="kw-algo">Lire</span>(ch)
+    <span class="kw-algo">Jusqu'à</span> (Long(ch) = <span class="kw-val">10</span>) <span class="kw-algo">Et</span> verif_alphanum_distincts(ch)
+<span class="kw-algo">Fin</span>
+
+<span class="kw-algo">Fonction</span> <span class="kw-fn">verif_alphanum_distincts</span>(ch : <span class="kw-type">chaîne</span>) : <span class="kw-type">booléen</span>
+<span class="kw-algo">Début</span>
+    ok ← <span class="kw-val">Vrai</span>
+    i ← <span class="kw-val">0</span>
+    <span class="kw-algo">Tant que</span> (i &lt; Long(ch)) <span class="kw-algo">Et</span> ok <span class="kw-algo">Faire</span>
+        <span class="kw-algo">Si</span> (Pos(ch[i], ch) = i) <span class="kw-algo">Et</span>
+           ((ch[i] ∈ [<span class="kw-val">"0"</span>..<span class="kw-val">"9"</span>]) <span class="kw-algo">Ou</span>
+            (Majus(ch)[i] ∈ [<span class="kw-val">"A"</span>..<span class="kw-val">"Z"</span>])) <span class="kw-algo">Alors</span>
+            i ← i + <span class="kw-val">1</span>
+        <span class="kw-algo">Sinon</span>
+            ok ← <span class="kw-val">Faux</span>
+        <span class="kw-algo">FinSi</span>
+    <span class="kw-algo">Fin Tant que</span>
+    <span class="kw-algo">Retourner</span> ok
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-kw">def</span> <span class="py-fn">saisir</span>():
+    ch = <span class="py-builtin">input</span>(<span class="py-str">"Saisir 10 caractères alphanumériques distincts : "</span>)
+    <span class="py-kw">while not</span> (<span class="py-builtin">len</span>(ch) == <span class="py-num">10</span> <span class="py-kw">and</span> verif_alphanum_distincts(ch)):
+        ch = <span class="py-builtin">input</span>(<span class="py-str">"Saisir 10 caractères alphanumériques distincts : "</span>)
+    <span class="py-kw">return</span> ch
+
+<span class="py-kw">def</span> <span class="py-fn">verif_alphanum_distincts</span>(ch):
+    ok = <span class="py-kw">True</span>
+    i = <span class="py-num">0</span>
+    <span class="py-kw">while</span> (i &lt; <span class="py-builtin">len</span>(ch)) <span class="py-kw">and</span> ok:
+        <span class="py-kw">if</span> (ch.find(ch[i]) == i) <span class="py-kw">and</span> \
+           (ch[i].upper() >= <span class="py-str">"A"</span> <span class="py-kw">and</span> ch[i].upper() &lt;= <span class="py-str">"Z"</span> <span class="py-kw">or</span>
+            <span class="py-str">"0"</span> &lt;= ch[i] &lt;= <span class="py-str">"9"</span>):
+            i = i + <span class="py-num">1</span>
+        <span class="py-kw">else</span>:
+            ok = <span class="py-kw">False</span>
+    <span class="py-kw">return</span> ok</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Q5 -->
+                <div class="checklist-item" data-id="5"
+                    data-help="Vérifier la longueur de la chaîne.|Parcourir chaque caractère et détecter s'il correspond à une majuscule, une minuscule, un chiffre ou un symbole autorisé.|Valider le mot de passe uniquement si toutes les conditions sont respectées.">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q5</span>Saisir un mot de passe de 8
+                            caractères, il doit contenir au moins (1 chiffre, 1 majuscule, 1 minuscule, 1 symbole parmi
+                            "@,*,#,$,%")<span class="difficulty hard">Difficile</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-algo">Fonction</span> <span class="kw-fn">verif_mdp</span>(ch : <span class="kw-type">chaîne</span>) : <span class="kw-type">booléen</span>
+<span class="kw-algo">Début</span>
+    nbchiff ← <span class="kw-val">0</span>  nbmaj ← <span class="kw-val">0</span>  nbmin ← <span class="kw-val">0</span>  nbsym ← <span class="kw-val">0</span>
+    <span class="kw-algo">Pour</span> i <span class="kw-algo">de</span> <span class="kw-val">0</span> <span class="kw-algo">à</span> Long(ch) - <span class="kw-val">1</span> <span class="kw-algo">Faire</span>
+        <span class="kw-algo">Si</span> ch[i] ∈ [<span class="kw-val">"0"</span>..<span class="kw-val">"9"</span>] <span class="kw-algo">Alors</span>
+            nbchiff ← nbchiff + <span class="kw-val">1</span>
+        <span class="kw-algo">Sinon Si</span> ch[i] ∈ [<span class="kw-val">"A"</span>..<span class="kw-val">"Z"</span>] <span class="kw-algo">Alors</span>
+            nbmaj ← nbmaj + <span class="kw-val">1</span>
+        <span class="kw-algo">Sinon Si</span> ch[i] ∈ [<span class="kw-val">"a"</span>..<span class="kw-val">"z"</span>] <span class="kw-algo">Alors</span>
+            nbmin ← nbmin + <span class="kw-val">1</span>
+        <span class="kw-algo">Sinon Si</span> ch[i] ∈ {<span class="kw-val">"@"</span>,<span class="kw-val">"*"</span>,<span class="kw-val">"#"</span>,<span class="kw-val">"$"</span>,<span class="kw-val">"%"</span>} <span class="kw-algo">Alors</span>
+            nbsym ← nbsym + <span class="kw-val">1</span>
+        <span class="kw-algo">FinSi</span>
+    <span class="kw-algo">Fin Pour</span>
+    <span class="kw-algo">Retourner</span> (nbchiff≥<span class="kw-val">1</span>) <span class="kw-algo">Et</span> (nbmaj≥<span class="kw-val">1</span>) <span class="kw-algo">Et</span> (nbmin≥<span class="kw-val">1</span>) <span class="kw-algo">Et</span> (nbsym≥<span class="kw-val">1</span>)
+<span class="kw-algo">Fin</span>
+
+<span class="kw-algo">Procédure</span> <span class="kw-fn">saisir</span>(@ch : <span class="kw-type">chaîne</span>)
+<span class="kw-algo">Début</span>
+    <span class="kw-algo">Répéter</span>
+        <span class="kw-algo">Écrire</span>(<span class="kw-val">"Saisir un mot de passe (8 car.) : "</span>)
+        <span class="kw-algo">Lire</span>(ch)
+    <span class="kw-algo">Jusqu'à</span> (Long(ch) = <span class="kw-val">8</span>) <span class="kw-algo">Et</span> verif_mdp(ch)
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-kw">def</span> <span class="py-fn">verif_mdp</span>(ch):
+    nbchiff = <span class="py-num">0</span>
+    nbmaj = <span class="py-num">0</span>
+    nbmin = <span class="py-num">0</span>
+    nbsym = <span class="py-num">0</span>
+    <span class="py-kw">for</span> i <span class="py-kw">in</span> <span class="py-builtin">range</span>(<span class="py-builtin">len</span>(ch)):
+        <span class="py-kw">if</span> <span class="py-str">"0"</span> &lt;= ch[i] &lt;= <span class="py-str">"9"</span>:
+            nbchiff = nbchiff + <span class="py-num">1</span>
+        <span class="py-kw">elif</span> <span class="py-str">"A"</span> &lt;= ch[i] &lt;= <span class="py-str">"Z"</span>:
+            nbmaj = nbmaj + <span class="py-num">1</span>
+        <span class="py-kw">elif</span> <span class="py-str">"a"</span> &lt;= ch[i] &lt;= <span class="py-str">"z"</span>:
+            nbmin = nbmin + <span class="py-num">1</span>
+        <span class="py-kw">elif</span> ch[i] <span class="py-kw">in</span> [<span class="py-str">"@"</span>, <span class="py-str">"*"</span>, <span class="py-str">"#"</span>, <span class="py-str">"$"</span>, <span class="py-str">"%"</span>]:
+            nbsym = nbsym + <span class="py-num">1</span>
+    <span class="py-kw">return</span> nbchiff >= <span class="py-num">1</span> <span class="py-kw">and</span> nbmaj >= <span class="py-num">1</span> <span class="py-kw">and</span> nbmin >= <span class="py-num">1</span> <span class="py-kw">and</span> nbsym >= <span class="py-num">1</span>
+
+<span class="py-kw">def</span> <span class="py-fn">saisir</span>():
+    ch = <span class="py-builtin">input</span>(<span class="py-str">"Saisir un mot de passe (8 car.) : "</span>)
+    <span class="py-kw">while not</span> (<span class="py-builtin">len</span>(ch) == <span class="py-num">8</span> <span class="py-kw">and</span> verif_mdp(ch)):
+        ch = <span class="py-builtin">input</span>(<span class="py-str">"Saisir un mot de passe (8 car.) : "</span>)
+    <span class="py-kw">return</span> ch</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Q6 -->
+                <div class="checklist-item" data-id="6"
+                    data-help="Compter les espaces dans la chaîne.|Nombre de mots = nombre d'espaces + 1.|Attention aux espaces multiples !">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q6</span>Saisir une phrase composée par des
+                            lettres et des espaces, contenant au moins trois mots<span
+                                class="difficulty easy">Facile</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-comment">{ Réutiliser verif_lettres_espace (Q2) et nb_mots (Q3) }</span>
+<span class="kw-algo">Procédure</span> <span class="kw-fn">saisir</span>(@ch : <span class="kw-type">chaîne</span>)
+<span class="kw-algo">Début</span>
+    <span class="kw-algo">Répéter</span>
+        <span class="kw-algo">Écrire</span>(<span class="kw-val">"Saisir une phrase (au moins 3 mots) : "</span>)
+        <span class="kw-algo">Lire</span>(ch)
+    <span class="kw-algo">Jusqu'à</span> verif_lettres_espace(ch) <span class="kw-algo">Et</span> (nb_mots(ch) ≥ <span class="kw-val">3</span>)
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-comment"># Réutiliser verif_lettres_espace (Q2) et nb_mots (Q3)</span>
+<span class="py-kw">def</span> <span class="py-fn">saisir</span>():
+    ch = <span class="py-builtin">input</span>(<span class="py-str">"Saisir une phrase (au moins 3 mots) : "</span>)
+    <span class="py-kw">while not</span> (verif_lettres_espace(ch) <span class="py-kw">and</span> nb_mots(ch) >= <span class="py-num">3</span>):
+        ch = <span class="py-builtin">input</span>(<span class="py-str">"Saisir une phrase (au moins 3 mots) : "</span>)
+    <span class="py-kw">return</span> ch</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== SECTION B ===== -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">B</span>
+                    Traitement des chaînes
+                </h2>
+
+                <!-- Q7 -->
+                <div class="checklist-item" data-id="7"
+                    data-help="Supprimer les espaces au début.|Supprimer les espaces à la fin.|Remplacer les multiples espaces consécutifs à l'intérieur de la chaîne par un seul espace.">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q7</span>Fonction qui supprime les espaces
+                            superflus<span class="difficulty medium">Moyen</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-algo">Fonction</span> <span class="kw-fn">suppr_espaces</span>(ch : <span class="kw-type">chaîne</span>) : <span class="kw-type">chaîne</span>
+<span class="kw-algo">Début</span>
+    <span class="kw-comment">{ Supprimer les espaces doubles consécutifs }</span>
+    <span class="kw-algo">Tant que</span> Pos(<span class="kw-val">"  "</span>, ch) ≠ -<span class="kw-val">1</span> <span class="kw-algo">Faire</span>
+        ch ← Effacer(ch, Pos(<span class="kw-val">"  "</span>, ch), Pos(<span class="kw-val">"  "</span>, ch) + <span class="kw-val">1</span>)
+    <span class="kw-algo">Fin Tant que</span>
+    <span class="kw-comment">{ Supprimer espace de début si présent }</span>
+    <span class="kw-algo">Si</span> (Long(ch) &gt; <span class="kw-val">0</span>) <span class="kw-algo">Et</span> (ch[<span class="kw-val">0</span>] = <span class="kw-val">" "</span>) <span class="kw-algo">Alors</span>
+        ch ← Effacer(ch, <span class="kw-val">0</span>, <span class="kw-val">1</span>)
+    <span class="kw-algo">FinSi</span>
+    <span class="kw-comment">{ Supprimer espace de fin si présent }</span>
+    <span class="kw-algo">Si</span> (Long(ch) &gt; <span class="kw-val">0</span>) <span class="kw-algo">Et</span> (ch[Long(ch)-<span class="kw-val">1</span>] = <span class="kw-val">" "</span>) <span class="kw-algo">Alors</span>
+        ch ← Effacer(ch, Long(ch)-<span class="kw-val">1</span>, Long(ch))
+    <span class="kw-algo">FinSi</span>
+    <span class="kw-algo">Retourner</span> ch
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-kw">def</span> <span class="py-fn">suppr_espaces</span>(ch):
+    <span class="py-comment"># Supprimer les espaces doubles consécutifs</span>
+    <span class="py-kw">while</span> ch.find(<span class="py-str">"  "</span>) != -<span class="py-num">1</span>:
+        p = ch.find(<span class="py-str">"  "</span>)
+        ch = ch[:p] + ch[p+<span class="py-num">1</span>:]
+    <span class="py-comment"># Supprimer espace de début si présent</span>
+    <span class="py-kw">if</span> <span class="py-builtin">len</span>(ch) > <span class="py-num">0</span> <span class="py-kw">and</span> ch[<span class="py-num">0</span>] == <span class="py-str">" "</span>:
+        ch = ch[<span class="py-num">1</span>:<span class="py-builtin">len</span>(ch)]
+    <span class="py-comment"># Supprimer espace de fin si présent</span>
+    <span class="py-kw">if</span> <span class="py-builtin">len</span>(ch) > <span class="py-num">0</span> <span class="py-kw">and</span> ch[<span class="py-builtin">len</span>(ch)-<span class="py-num">1</span>] == <span class="py-str">" "</span>:
+        ch = ch[:<span class="py-builtin">len</span>(ch)-<span class="py-num">1</span>]
+    <span class="py-kw">return</span> ch</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Q8 -->
+                <div class="checklist-item" data-id="8"
+                    data-help="Parcourir la chaîne depuis la fin jusqu'au début.|Construire une nouvelle chaîne en ajoutant les caractères dans l'ordre inverse.">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q8</span>Fonction qui inverse une chaîne de
+                            caractères<span class="difficulty easy">Facile</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-comment">{ 1ère méthode : parcours depuis la fin }</span>
+<span class="kw-algo">Fonction</span> <span class="kw-fn">inverser</span>(ch : <span class="kw-type">chaîne</span>) : <span class="kw-type">chaîne</span>
+<span class="kw-algo">Début</span>
+    res ← <span class="kw-val">""</span>
+    <span class="kw-algo">Pour</span> i <span class="kw-algo">de</span> Long(ch)-<span class="kw-val">1</span> <span class="kw-algo">à</span> <span class="kw-val">0</span> [Pas = -<span class="kw-val">1</span>] <span class="kw-algo">Faire</span>
+        res ← res + ch[i]
+    <span class="kw-algo">Fin Pour</span>
+    <span class="kw-algo">Retourner</span> res
+<span class="kw-algo">Fin</span>
+
+<span class="kw-comment">{ 2ème méthode : ajout en tête depuis le début }</span>
+<span class="kw-algo">Fonction</span> <span class="kw-fn">inverser</span>(ch : <span class="kw-type">chaîne</span>) : <span class="kw-type">chaîne</span>
+<span class="kw-algo">Début</span>
+    res ← <span class="kw-val">""</span>
+    <span class="kw-algo">Pour</span> i <span class="kw-algo">de</span> <span class="kw-val">0</span> <span class="kw-algo">à</span> Long(ch)-<span class="kw-val">1</span> <span class="kw-algo">Faire</span>
+        res ← ch[i] + res
+    <span class="kw-algo">Fin Pour</span>
+    <span class="kw-algo">Retourner</span> res
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-comment"># 1ère méthode : parcours depuis la fin</span>
+<span class="py-kw">def</span> <span class="py-fn">inverser</span>(ch):
+    res = <span class="py-str">""</span>
+    <span class="py-kw">for</span> i <span class="py-kw">in</span> <span class="py-builtin">range</span>(<span class="py-builtin">len</span>(ch)-<span class="py-num">1</span>, -<span class="py-num">1</span>, -<span class="py-num">1</span>):
+        res = res + ch[i]
+    <span class="py-kw">return</span> res
+
+<span class="py-comment"># 2ème méthode : ajout en tête depuis le début</span>
+<span class="py-kw">def</span> <span class="py-fn">inverser</span>(ch):
+    res = <span class="py-str">""</span>
+    <span class="py-kw">for</span> i <span class="py-kw">in</span> <span class="py-builtin">range</span>(<span class="py-builtin">len</span>(ch)):
+        res = ch[i] + res
+    <span class="py-kw">return</span> res</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Q9 -->
+                <div class="checklist-item" data-id="9"
+                    data-help="Initialiser une nouvelle chaîne vide pour le résultat.|Parcourir la chaîne et identifier les mots.|À chaque mot trouvé, le placer devant la chaîne résultat.">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q9</span>Fonction qui inverse l'ordre des mots
+                            dans une chaîne<span class="difficulty hard">Difficile</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-algo">Fonction</span> <span class="kw-fn">inverser_mots</span>(ch : <span class="kw-type">chaîne</span>) : <span class="kw-type">chaîne</span>
+<span class="kw-algo">Début</span>
+    ch ← ch + <span class="kw-val">" "</span>
+    res ← <span class="kw-val">""</span>
+    <span class="kw-algo">Tant que</span> ch ≠ <span class="kw-val">""</span> <span class="kw-algo">Faire</span>
+        mot ← Sous_chaine(ch, <span class="kw-val">0</span>, Pos(<span class="kw-val">" "</span>, ch))
+        <span class="kw-algo">Si</span> res = <span class="kw-val">""</span> <span class="kw-algo">Alors</span>
+            res ← mot
+        <span class="kw-algo">Sinon</span>
+            res ← mot + <span class="kw-val">" "</span> + res
+        <span class="kw-algo">FinSi</span>
+        ch ← Effacer(ch, <span class="kw-val">0</span>, Pos(<span class="kw-val">" "</span>, ch) + <span class="kw-val">1</span>)
+    <span class="kw-algo">Fin Tant que</span>
+    <span class="kw-algo">Retourner</span> res
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-kw">def</span> <span class="py-fn">inverser_mots</span>(ch):
+    ch = ch + <span class="py-str">" "</span>
+    res = <span class="py-str">""</span>
+    <span class="py-kw">while</span> ch != <span class="py-str">""</span>:
+        p = ch.find(<span class="py-str">" "</span>)
+        mot = ch[<span class="py-num">0</span>:p]
+        <span class="py-kw">if</span> res == <span class="py-str">""</span>:
+            res = mot
+        <span class="py-kw">else</span>:
+            res = mot + <span class="py-str">" "</span> + res
+        ch = ch[p+<span class="py-num">1</span>:<span class="py-builtin">len</span>(ch)]
+    <span class="py-kw">return</span> res</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== SECTION C ===== -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">C</span>
+                    Remplissage et génération de tableaux
+                </h2>
+
+                <!-- Q10 -->
+                <div class="checklist-item" data-id="10"
+                    data-help="Commencer par saisir le premier entier.|Pour chaque entier suivant, vérifier qu'il est supérieur ou égal au précédent.">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q10</span>Remplir un tableau de n entiers
+                            positifs triés croissants<span class="difficulty easy">Facile</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-algo">Procédure</span> <span class="kw-fn">remplir</span>(@T : <span class="kw-type">Tab</span>, n : <span class="kw-type">entier</span>)
+<span class="kw-algo">Début</span>
+    <span class="kw-algo">Répéter</span>
+        <span class="kw-algo">Écrire</span>(<span class="kw-val">"T[0] : "</span>)
+        <span class="kw-algo">Lire</span>(T[<span class="kw-val">0</span>])
+    <span class="kw-algo">Jusqu'à</span> T[<span class="kw-val">0</span>] ≥ <span class="kw-val">0</span>
+    <span class="kw-algo">Pour</span> i <span class="kw-algo">de</span> <span class="kw-val">1</span> <span class="kw-algo">à</span> n-<span class="kw-val">1</span> <span class="kw-algo">Faire</span>
+        <span class="kw-algo">Répéter</span>
+            <span class="kw-algo">Écrire</span>(<span class="kw-val">"T["</span>, i, <span class="kw-val">"] : "</span>)
+            <span class="kw-algo">Lire</span>(T[i])
+        <span class="kw-algo">Jusqu'à</span> T[i] ≥ T[i-<span class="kw-val">1</span>]
+    <span class="kw-algo">Fin Pour</span>
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre
+                                    class="code-block"><span class="py-kw">def</span> <span class="py-fn">remplir</span>(T, n):
+    T[<span class="py-num">0</span>] = <span class="py-builtin">int</span>(<span class="py-builtin">input</span>(<span class="py-str">"T[0] : "</span>))
+    <span class="py-kw">while</span> T[<span class="py-num">0</span>] < <span class="py-num">0</span>:
+        T[<span class="py-num">0</span>] = <span class="py-builtin">int</span>(<span class="py-builtin">input</span>(<span class="py-str">"T[0] : "</span>))
+    <span class="py-kw">for</span> i <span class="py-kw">in</span> <span class="py-builtin">range</span>(<span class="py-num">1</span>, n):
+        T[i] = <span class="py-builtin">int</span>(<span class="py-builtin">input</span>(<span class="py-str">"T["</span>+<span class="py-builtin">str</span>(i)+<span class="py-str">"] : "</span>))
+        <span class="py-kw">while</span> T[i] < T[i-<span class="py-num">1</span>]:
+            T[i] = <span class="py-builtin">int</span>(<span class="py-builtin">input</span>(<span class="py-str">"T["</span>+<span class="py-builtin">str</span>(i)+<span class="py-str">"] : "</span>))</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Q11 -->
+                <div class="checklist-item" data-id="11"
+                    data-help="Générer un nombre aléatoire compris entre 100 et 999.|Vérifier si ce nombre est premier.|Si oui, l'ajouter au tableau.">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q11</span>Remplir un tableau d'entiers
+                            aléatoires à trois chiffres premiers<span class="difficulty hard">Difficile</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-comment">{ 1ère méthode : Pour + Répéter imbriqué }</span>
+<span class="kw-comment">{ Réutiliser la fonction Premier(x) }</span>
+<span class="kw-algo">Procédure</span> <span class="kw-fn">remplir</span>(@T : <span class="kw-type">Tab</span>, n : <span class="kw-type">entier</span>)
+<span class="kw-algo">Début</span>
+    <span class="kw-algo">Pour</span> i <span class="kw-algo">de</span> <span class="kw-val">0</span> <span class="kw-algo">à</span> n-<span class="kw-val">1</span> <span class="kw-algo">Faire</span>
+        <span class="kw-algo">Répéter</span>
+            x ← Aléa(<span class="kw-val">100</span>, <span class="kw-val">999</span>)
+        <span class="kw-algo">Jusqu'à</span> Premier(x)
+        T[i] ← x
+    <span class="kw-algo">Fin Pour</span>
+<span class="kw-algo">Fin</span>
+
+<span class="kw-comment">{ 2ème méthode : Tant que + Si }</span>
+<span class="kw-algo">Procédure</span> <span class="kw-fn">remplir</span>(@T : <span class="kw-type">Tab</span>, n : <span class="kw-type">entier</span>)
+<span class="kw-algo">Début</span>
+    i ← <span class="kw-val">0</span>
+    <span class="kw-algo">Tant que</span> i &lt; n <span class="kw-algo">Faire</span>
+        x ← Aléa(<span class="kw-val">100</span>, <span class="kw-val">999</span>)
+        <span class="kw-algo">Si</span> Premier(x) <span class="kw-algo">Alors</span>
+            T[i] ← x
+            i ← i + <span class="kw-val">1</span>
+        <span class="kw-algo">FinSi</span>
+    <span class="kw-algo">Fin Tant que</span>
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-kw">from</span> random <span class="py-kw">import</span> randint
+<span class="py-comment"># Réutiliser la fonction Premier(x)</span>
+
+<span class="py-comment"># 1ère méthode : for + while imbriqué</span>
+<span class="py-kw">def</span> <span class="py-fn">remplir</span>(T, n):
+    <span class="py-kw">for</span> i <span class="py-kw">in</span> <span class="py-builtin">range</span>(n):
+        x = randint(<span class="py-num">100</span>, <span class="py-num">999</span>)
+        <span class="py-kw">while not</span> Premier(x):
+            x = randint(<span class="py-num">100</span>, <span class="py-num">999</span>)
+        T[i] = x
+
+<span class="py-comment"># 2ème méthode : while + if</span>
+<span class="py-kw">def</span> <span class="py-fn">remplir</span>(T, n):
+    i = <span class="py-num">0</span>
+    <span class="py-kw">while</span> i &lt; n:
+        x = randint(<span class="py-num">100</span>, <span class="py-num">999</span>)
+        <span class="py-kw">if</span> Premier(x):
+            T[i] = x
+            i = i + <span class="py-num">1</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Q12 -->
+                <div class="checklist-item" data-id="12"
+                    data-help="Pour chaque réel saisi (sauf le premier), vérifier qu'il n'existe pas déjà.|Utiliser une fonction distincts.">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q12</span>Remplir un tableau de réels non nuls
+                            et distincts<span class="difficulty medium">Moyen</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-comment">{ Réutiliser la fonction distincts(T, i) }</span>
+<span class="kw-algo">Procédure</span> <span class="kw-fn">remplir</span>(@T : <span class="kw-type">Tab</span>, n : <span class="kw-type">entier</span>)
+<span class="kw-algo">Début</span>
+    <span class="kw-algo">Pour</span> i <span class="kw-algo">de</span> <span class="kw-val">0</span> <span class="kw-algo">à</span> n-<span class="kw-val">1</span> <span class="kw-algo">Faire</span>
+        <span class="kw-algo">Répéter</span>
+            <span class="kw-algo">Écrire</span>(<span class="kw-val">"T["</span>, i, <span class="kw-val">"] : "</span>)
+            <span class="kw-algo">Lire</span>(T[i])
+        <span class="kw-algo">Jusqu'à</span> (T[i] ≠ <span class="kw-val">0</span>) <span class="kw-algo">Et</span> ((i = <span class="kw-val">0</span>) <span class="kw-algo">Ou</span> distincts(T, i))
+    <span class="kw-algo">Fin Pour</span>
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre
+                                    class="code-block"><span class="py-comment"># Réutiliser la fonction distincts(T, i)</span>
+<span class="py-kw">def</span> <span class="py-fn">remplir</span>(T, n):
+    <span class="py-kw">for</span> i <span class="py-kw">in</span> <span class="py-builtin">range</span>(n):
+        T[i] = <span class="py-builtin">float</span>(<span class="py-builtin">input</span>(<span class="py-str">"T["</span>+<span class="py-builtin">str</span>(i)+<span class="py-str">"] : "</span>))
+        <span class="py-kw">while not</span> (T[i] != <span class="py-num">0</span> <span class="py-kw">and</span> (i == <span class="py-num">0</span> <span class="py-kw">or</span> distincts(T, i))):
+            T[i] = <span class="py-builtin">float</span>(<span class="py-builtin">input</span>(<span class="py-str">"T["</span>+<span class="py-builtin">str</span>(i)+<span class="py-str">"] : "</span>))</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Q13 -->
+                <div class="checklist-item" data-id="13"
+                    data-help="Générer une chaîne de 8 lettres aléatoires.|Vérifier que cette chaîne n'existe pas déjà dans le tableau.|Ajouter seulement si distincte.">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q13</span>Remplir un tableau t par n chaînes
+                            distinctes (chaque chaîne composée de 8 lettres aléatoires)<span
+                                class="difficulty hard">Difficile</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-comment">{ Réutiliser la fonction distincts(T, i) }</span>
+<span class="kw-algo">Fonction</span> <span class="kw-fn">generer_chaine</span>() : <span class="kw-type">chaîne</span>
+<span class="kw-algo">Début</span>
+    ch ← <span class="kw-val">""</span>
+    <span class="kw-algo">Pour</span> j <span class="kw-algo">de</span> <span class="kw-val">1</span> <span class="kw-algo">à</span> <span class="kw-val">8</span> <span class="kw-algo">Faire</span>
+        ch ← ch + Chr(Aléa(<span class="kw-val">65</span>, <span class="kw-val">90</span>))
+    <span class="kw-algo">Fin Pour</span>
+    <span class="kw-algo">Retourner</span> ch
+<span class="kw-algo">Fin</span>
+
+<span class="kw-algo">Procédure</span> <span class="kw-fn">remplir</span>(@T : <span class="kw-type">Tab</span>, n : <span class="kw-type">entier</span>)
+<span class="kw-algo">Début</span>
+    <span class="kw-algo">Pour</span> i <span class="kw-algo">de</span> <span class="kw-val">0</span> <span class="kw-algo">à</span> n-<span class="kw-val">1</span> <span class="kw-algo">Faire</span>
+        <span class="kw-algo">Répéter</span>
+            T[i] ← generer_chaine()
+        <span class="kw-algo">Jusqu'à</span> (i = <span class="kw-val">0</span>) <span class="kw-algo">Ou</span> distincts(T, i)
+    <span class="kw-algo">Fin Pour</span>
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-kw">from</span> random <span class="py-kw">import</span> randint
+<span class="py-comment"># Réutiliser la fonction distincts(T, i)</span>
+
+<span class="py-kw">def</span> <span class="py-fn">generer_chaine</span>():
+    ch = <span class="py-str">""</span>
+    <span class="py-kw">for</span> j <span class="py-kw">in</span> <span class="py-builtin">range</span>(<span class="py-num">8</span>):
+        ch = ch + <span class="py-builtin">chr</span>(randint(<span class="py-num">65</span>, <span class="py-num">90</span>))
+    <span class="py-kw">return</span> ch
+
+<span class="py-kw">def</span> <span class="py-fn">remplir</span>(T, n):
+    <span class="py-kw">for</span> i <span class="py-kw">in</span> <span class="py-builtin">range</span>(n):
+        T[i] = generer_chaine()
+        <span class="py-kw">while not</span> (i == <span class="py-num">0</span> <span class="py-kw">or</span> distincts(T, i)):
+            T[i] = generer_chaine()</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== SECTION D ===== -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">D</span>
+                    Traitements et fonctions sur tableaux
+                </h2>
+
+                <!-- Q14 -->
+                <div class="checklist-item" data-id="14"
+                    data-help="Échanger T[i] et T[n-i-1].|Parcourir seulement jusqu'à la moitié du tableau.">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q14</span>Procédure qui inverse les éléments
+                            d'un tableau t de taille n<span class="difficulty easy">Facile</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-algo">Procédure</span> <span class="kw-fn">inverser_tab</span>(@T : <span class="kw-type">Tab</span>, n : <span class="kw-type">entier</span>)
+<span class="kw-algo">Début</span>
+    <span class="kw-algo">Pour</span> i <span class="kw-algo">de</span> <span class="kw-val">0</span> <span class="kw-algo">à</span> (n <span class="kw-algo">Div</span> <span class="kw-val">2</span>) - <span class="kw-val">1</span> <span class="kw-algo">Faire</span>
+        Aux ← T[i]
+        T[i] ← T[n-<span class="kw-val">1</span>-i]
+        T[n-<span class="kw-val">1</span>-i] ← Aux
+    <span class="kw-algo">Fin Pour</span>
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-kw">def</span> <span class="py-fn">inverser_tab</span>(T, n):
+    <span class="py-kw">for</span> i <span class="py-kw">in</span> <span class="py-builtin">range</span>(n // <span class="py-num">2</span>):
+        aux = T[i]
+        T[i] = T[n-<span class="py-num">1</span>-i]
+        T[n-<span class="py-num">1</span>-i] = aux</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Q15 -->
+                <div class="checklist-item" data-id="15"
+                    data-help="Initialiser une variable somme à 0.|Parcourir le tableau et ajouter chaque élément.">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q15</span>Fonction qui calcule la somme des
+                            éléments d'un tableau t de taille n<span class="difficulty easy">Facile</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-algo">Fonction</span> <span class="kw-fn">somme_tab</span>(T : <span class="kw-type">Tab</span>, n : <span class="kw-type">entier</span>) : <span class="kw-type">réel</span>
+<span class="kw-algo">Début</span>
+    s ← <span class="kw-val">0</span>
+    <span class="kw-algo">Pour</span> i <span class="kw-algo">de</span> <span class="kw-val">0</span> <span class="kw-algo">à</span> n-<span class="kw-val">1</span> <span class="kw-algo">Faire</span>
+        s ← s + T[i]
+    <span class="kw-algo">Fin Pour</span>
+    <span class="kw-algo">Retourner</span> s
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-kw">def</span> <span class="py-fn">somme_tab</span>(T, n):
+    s = <span class="py-num">0</span>
+    <span class="py-kw">for</span> i <span class="py-kw">in</span> <span class="py-builtin">range</span>(n):
+        s = s + T[i]
+    <span class="py-kw">return</span> s</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Q16 -->
+                <div class="checklist-item" data-id="16"
+                    data-help="Initialiser un compteur à 0.|Si T[i] = x, incrémenter le compteur.">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q16</span>Fonction qui détermine le nombre
+                            d'occurrences d'un entier x dans un tableau t de taille n<span
+                                class="difficulty easy">Facile</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-algo">Fonction</span> <span class="kw-fn">nb_occurrence</span>(T : <span class="kw-type">Tab</span>, n, x : <span class="kw-type">entier</span>) : <span class="kw-type">entier</span>
+<span class="kw-algo">Début</span>
+    nb ← <span class="kw-val">0</span>
+    <span class="kw-algo">Pour</span> i <span class="kw-algo">de</span> <span class="kw-val">0</span> <span class="kw-algo">à</span> n-<span class="kw-val">1</span> <span class="kw-algo">Faire</span>
+        <span class="kw-algo">Si</span> T[i] = x <span class="kw-algo">Alors</span>
+            nb ← nb + <span class="kw-val">1</span>
+        <span class="kw-algo">FinSi</span>
+    <span class="kw-algo">Fin Pour</span>
+    <span class="kw-algo">Retourner</span> nb
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-kw">def</span> <span class="py-fn">nb_occurrence</span>(T, n, x):
+    nb = <span class="py-num">0</span>
+    <span class="py-kw">for</span> i <span class="py-kw">in</span> <span class="py-builtin">range</span>(n):
+        <span class="py-kw">if</span> T[i] == x:
+            nb = nb + <span class="py-num">1</span>
+    <span class="py-kw">return</span> nb</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Q17 -->
+                <div class="checklist-item" data-id="17"
+                    data-help="Initialiser max avec T[0].|Parcourir et mettre à jour si T[i] > max.">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q17</span>Fonction qui renvoie le maximum d'un
+                            tableau t de taille n<span class="difficulty easy">Facile</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-algo">Fonction</span> <span class="kw-fn">max_tab</span>(T : <span class="kw-type">Tab</span>, n : <span class="kw-type">entier</span>) : <span class="kw-type">entier</span>
+<span class="kw-algo">Début</span>
+    max ← T[<span class="kw-val">0</span>]
+    <span class="kw-algo">Pour</span> i <span class="kw-algo">de</span> <span class="kw-val">1</span> <span class="kw-algo">à</span> n-<span class="kw-val">1</span> <span class="kw-algo">Faire</span>
+        <span class="kw-algo">Si</span> T[i] &gt; max <span class="kw-algo">Alors</span>
+            max ← T[i]
+        <span class="kw-algo">FinSi</span>
+    <span class="kw-algo">Fin Pour</span>
+    <span class="kw-algo">Retourner</span> max
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-kw">def</span> <span class="py-fn">max_tab</span>(T, n):
+    Max = T[<span class="py-num">0</span>]
+    <span class="py-kw">for</span> i <span class="py-kw">in</span> <span class="py-builtin">range</span>(<span class="py-num">1</span>, n):
+        <span class="py-kw">if</span> T[i] > Max:
+            Max = T[i]
+    <span class="py-kw">return</span> Max</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Q18 -->
+                <div class="checklist-item" data-id="18"
+                    data-help="Initialiser pmin à 0.|Parcourir et mettre à jour si T[i] < T[pmin].">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q18</span>Fonction qui renvoie l'indice du
+                            minimum dans un tableau t de taille n<span class="difficulty easy">Facile</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-algo">Fonction</span> <span class="kw-fn">pos_min_tab</span>(T : <span class="kw-type">Tab</span>, n : <span class="kw-type">entier</span>) : <span class="kw-type">entier</span>
+<span class="kw-algo">Début</span>
+    pmin ← <span class="kw-val">0</span>
+    <span class="kw-algo">Pour</span> i <span class="kw-algo">de</span> <span class="kw-val">1</span> <span class="kw-algo">à</span> n-<span class="kw-val">1</span> <span class="kw-algo">Faire</span>
+        <span class="kw-algo">Si</span> T[i] &lt; T[pmin] <span class="kw-algo">Alors</span>
+            pmin ← i
+        <span class="kw-algo">FinSi</span>
+    <span class="kw-algo">Fin Pour</span>
+    <span class="kw-algo">Retourner</span> pmin
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-kw">def</span> <span class="py-fn">pos_min_tab</span>(T, n):
+    pmin = <span class="py-num">0</span>
+    <span class="py-kw">for</span> i <span class="py-kw">in</span> <span class="py-builtin">range</span>(<span class="py-num">1</span>, n):
+        <span class="py-kw">if</span> T[i] &lt; T[pmin]:
+            pmin = i
+    <span class="py-kw">return</span> pmin</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Q19 -->
+                <div class="checklist-item" data-id="19"
+                    data-help="Initialiser Trouve à Faux.|Parcourir le tableau, si T[i] = w alors affecter Vrai.">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q19</span>Fonction qui teste l'existence d'un
+                            réel w dans un tableau t de taille n<span class="difficulty easy">Facile</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-algo">Fonction</span> <span class="kw-fn">existe</span>(T : <span class="kw-type">Tab</span>, n : <span class="kw-type">entier</span>, w : <span class="kw-type">réel</span>) : <span class="kw-type">booléen</span>
+<span class="kw-algo">Début</span>
+    Trouve ← <span class="kw-val">Faux</span>
+    i ← <span class="kw-val">0</span>
+    <span class="kw-algo">Tant que</span> (i &lt; n) <span class="kw-algo">Et</span> (Trouve = <span class="kw-val">Faux</span>) <span class="kw-algo">Faire</span>
+        <span class="kw-algo">Si</span> T[i] = w <span class="kw-algo">Alors</span>
+            Trouve ← <span class="kw-val">Vrai</span>
+        <span class="kw-algo">Sinon</span>
+            i ← i + <span class="kw-val">1</span>
+        <span class="kw-algo">FinSi</span>
+    <span class="kw-algo">Fin Tant que</span>
+    <span class="kw-algo">Retourner</span> Trouve
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-kw">def</span> <span class="py-fn">existe</span>(T, n, w):
+    Trouve = <span class="py-kw">False</span>
+    i = <span class="py-num">0</span>
+    <span class="py-kw">while</span> (i &lt; n) <span class="py-kw">and</span> (Trouve == <span class="py-kw">False</span>):
+        <span class="py-kw">if</span> T[i] == w:
+            Trouve = <span class="py-kw">True</span>
+        <span class="py-kw">else</span>:
+            i = i + <span class="py-num">1</span>
+    <span class="py-kw">return</span> Trouve</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Q20 -->
+                <div class="checklist-item" data-id="20"
+                    data-help="Parcourir le tableau.|Si T[i] = x, retenir i.|Si non trouvé, retourner -1.">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q20</span>Fonction qui renvoie l'indice de la
+                            première occurrence (retourne -1 sinon)<span class="difficulty medium">Moyen</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-algo">Fonction</span> <span class="kw-fn">indice_occurrence</span>(T : <span class="kw-type">Tab</span>, n, x : <span class="kw-type">entier</span>) : <span class="kw-type">entier</span>
+<span class="kw-algo">Début</span>
+    i ← <span class="kw-val">0</span>
+    <span class="kw-algo">Tant que</span> (i &lt; n) <span class="kw-algo">Et</span> (T[i] ≠ x) <span class="kw-algo">Faire</span>
+        i ← i + <span class="kw-val">1</span>
+    <span class="kw-algo">Fin Tant que</span>
+    <span class="kw-algo">Si</span> i &lt; n <span class="kw-algo">Alors</span>
+        <span class="kw-algo">Retourner</span> i
+    <span class="kw-algo">Sinon</span>
+        <span class="kw-algo">Retourner</span> -<span class="kw-val">1</span>
+    <span class="kw-algo">FinSi</span>
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-kw">def</span> <span class="py-fn">indice_occurrence</span>(T, n, x):
+    i = <span class="py-num">0</span>
+    <span class="py-kw">while</span> (i &lt; n) <span class="py-kw">and</span> (T[i] != x):
+        i = i + <span class="py-num">1</span>
+    <span class="py-kw">if</span> i &lt; n:
+        <span class="py-kw">return</span> i
+    <span class="py-kw">else</span>:
+        <span class="py-kw">return</span> -<span class="py-num">1</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Q21 -->
+                <div class="checklist-item" data-id="21"
+                    data-help="Trouver l'indice de l'élément à supprimer.|Décaler tous les éléments suivants vers la gauche.|Décrémenter n.">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q21</span>Procédure qui supprime un entier
+                            donné x dans un tableau t de taille n<span class="difficulty medium">Moyen</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-algo">Procédure</span> <span class="kw-fn">supprimer</span>(@T : <span class="kw-type">Tab</span>, @n : <span class="kw-type">entier</span>, x : <span class="kw-type">entier</span>)
+<span class="kw-algo">Début</span>
+    pos ← indice_occurrence(T, n, x)
+    <span class="kw-algo">Si</span> pos ≠ -<span class="kw-val">1</span> <span class="kw-algo">Alors</span>
+        <span class="kw-algo">Pour</span> i <span class="kw-algo">de</span> pos <span class="kw-algo">à</span> n-<span class="kw-val">2</span> <span class="kw-algo">Faire</span>
+            T[i] ← T[i+<span class="kw-val">1</span>]
+        <span class="kw-algo">Fin Pour</span>
+        n ← n - <span class="kw-val">1</span>
+    <span class="kw-algo">FinSi</span>
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-kw">def</span> <span class="py-fn">supprimer</span>(T, n, x):
+    pos = indice_occurrence(T, n, x)
+    <span class="py-kw">if</span> pos != -<span class="py-num">1</span>:
+        <span class="py-kw">for</span> i <span class="py-kw">in</span> <span class="py-builtin">range</span>(pos, n-<span class="py-num">1</span>):
+            T[i] = T[i+<span class="py-num">1</span>]
+        n = n - <span class="py-num">1</span>
+    <span class="py-kw">return</span> n</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Q22 -->
+                <div class="checklist-item" data-id="22"
+                    data-help="Trouver la position d'insertion.|Décaler les éléments vers la droite.|Insérer x à la position.|Incrémenter n.">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q22</span>Procédure qui insère un entier x dans
+                            un tableau trié de taille n<span class="difficulty hard">Difficile</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-algo">Procédure</span> <span class="kw-fn">inserer</span>(@T : <span class="kw-type">Tab</span>, @n : <span class="kw-type">entier</span>, x : <span class="kw-type">entier</span>)
+<span class="kw-algo">Début</span>
+    pos ← <span class="kw-val">0</span>
+    <span class="kw-algo">Tant que</span> (pos &lt; n) <span class="kw-algo">Et</span> (T[pos] &lt; x) <span class="kw-algo">Faire</span>
+        pos ← pos + <span class="kw-val">1</span>
+    <span class="kw-algo">Fin Tant que</span>
+    <span class="kw-algo">Pour</span> i <span class="kw-algo">de</span> n-<span class="kw-val">1</span> <span class="kw-algo">à</span> pos [Pas = -<span class="kw-val">1</span>] <span class="kw-algo">Faire</span>
+        T[i+<span class="kw-val">1</span>] ← T[i]
+    <span class="kw-algo">Fin Pour</span>
+    T[pos] ← x
+    n ← n + <span class="kw-val">1</span>
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-kw">def</span> <span class="py-fn">inserer</span>(T, n, x):
+    pos = <span class="py-num">0</span>
+    <span class="py-kw">while</span> (pos &lt; n) <span class="py-kw">and</span> (T[pos] &lt; x):
+        pos = pos + <span class="py-num">1</span>
+    <span class="py-kw">for</span> i <span class="py-kw">in</span> <span class="py-builtin">range</span>(n-<span class="py-num">1</span>, pos-<span class="py-num">1</span>, -<span class="py-num">1</span>):
+        T[i+<span class="py-num">1</span>] = T[i]
+    T[pos] = x
+    n = n + <span class="py-num">1</span>
+    <span class="py-kw">return</span> n</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Q23 -->
+                <div class="checklist-item" data-id="23"
+                    data-help="Utiliser 3 indices : i pour T1, j pour T2, k pour R.|Comparer T1[i] et T2[j].|Ne pas oublier les éléments restants !">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q23</span>Procédure qui fusionne deux tableaux
+                            triés t1 et t2 de tailles n1 et n2 dans un tableau résultat r de taille n1+n2<span
+                                class="difficulty hard">Difficile</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-algo">Procédure</span> <span class="kw-fn">fusionner</span>(T1, T2 : <span class="kw-type">Tab</span>, n1, n2 : <span class="kw-type">entier</span>, @R : <span class="kw-type">Tab</span>)
+<span class="kw-algo">Début</span>
+    i ← <span class="kw-val">0</span>  j ← <span class="kw-val">0</span>  k ← <span class="kw-val">0</span>
+    <span class="kw-algo">Tant que</span> (i &lt; n1) <span class="kw-algo">Et</span> (j &lt; n2) <span class="kw-algo">Faire</span>
+        <span class="kw-algo">Si</span> T1[i] ≤ T2[j] <span class="kw-algo">Alors</span>
+            R[k] ← T1[i]
+            i ← i + <span class="kw-val">1</span>
+        <span class="kw-algo">Sinon</span>
+            R[k] ← T2[j]
+            j ← j + <span class="kw-val">1</span>
+        <span class="kw-algo">FinSi</span>
+        k ← k + <span class="kw-val">1</span>
+    <span class="kw-algo">Fin Tant que</span>
+    <span class="kw-algo">Tant que</span> i &lt; n1 <span class="kw-algo">Faire</span>
+        R[k] ← T1[i]
+        i ← i + <span class="kw-val">1</span>
+        k ← k + <span class="kw-val">1</span>
+    <span class="kw-algo">Fin Tant que</span>
+    <span class="kw-algo">Tant que</span> j &lt; n2 <span class="kw-algo">Faire</span>
+        R[k] ← T2[j]
+        j ← j + <span class="kw-val">1</span>
+        k ← k + <span class="kw-val">1</span>
+    <span class="kw-algo">Fin Tant que</span>
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-kw">def</span> <span class="py-fn">fusionner</span>(T1, T2, n1, n2, R):
+    i = <span class="py-num">0</span>
+    j = <span class="py-num">0</span>
+    k = <span class="py-num">0</span>
+    <span class="py-kw">while</span> (i &lt; n1) <span class="py-kw">and</span> (j &lt; n2):
+        <span class="py-kw">if</span> T1[i] &lt;= T2[j]:
+            R[k] = T1[i]
+            i = i + <span class="py-num">1</span>
+        <span class="py-kw">else</span>:
+            R[k] = T2[j]
+            j = j + <span class="py-num">1</span>
+        k = k + <span class="py-num">1</span>
+    <span class="py-kw">while</span> i &lt; n1:
+        R[k] = T1[i]
+        i = i + <span class="py-num">1</span>
+        k = k + <span class="py-num">1</span>
+    <span class="py-kw">while</span> j &lt; n2:
+        R[k] = T2[j]
+        j = j + <span class="py-num">1</span>
+        k = k + <span class="py-num">1</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== SECTION E ===== -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">E</span>
+                    Affichages et recherches
+                </h2>
+
+                <!-- Q24 -->
+                <div class="checklist-item" data-id="24"
+                    data-help="Parcourir le tableau.|Tester si T[i] mod 2 = 0.|Afficher les valeurs paires.">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q24</span>Afficher les nombres pairs d'un
+                            tableau t de taille n<span class="difficulty easy">Facile</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-algo">Procédure</span> <span class="kw-fn">afficher_pairs</span>(T : <span class="kw-type">Tab</span>, n : <span class="kw-type">entier</span>)
+<span class="kw-algo">Début</span>
+    <span class="kw-algo">Pour</span> i <span class="kw-algo">de</span> <span class="kw-val">0</span> <span class="kw-algo">à</span> n-<span class="kw-val">1</span> <span class="kw-algo">Faire</span>
+        <span class="kw-algo">Si</span> T[i] <span class="kw-algo">Mod</span> <span class="kw-val">2</span> = <span class="kw-val">0</span> <span class="kw-algo">Alors</span>
+            <span class="kw-algo">Écrire</span>(T[i])
+        <span class="kw-algo">FinSi</span>
+    <span class="kw-algo">Fin Pour</span>
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-kw">def</span> <span class="py-fn">afficher_pairs</span>(T, n):
+    <span class="py-kw">for</span> i <span class="py-kw">in</span> <span class="py-builtin">range</span>(n):
+        <span class="py-kw">if</span> T[i] % <span class="py-num">2</span> == <span class="py-num">0</span>:
+            <span class="py-builtin">print</span>(T[i])</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Q25 -->
+                <div class="checklist-item" data-id="25"
+                    data-help="Parcourir chaque élément du tableau.|Vérifier si l'élément est un nombre premier (utiliser Premier(n)).|Afficher uniquement s'il est premier.">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q25</span>Afficher les nombres premiers d'un
+                            tableau t de taille n<span class="difficulty medium">Moyen</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-comment">{ Réutiliser la fonction Premier(x) }</span>
+<span class="kw-algo">Procédure</span> <span class="kw-fn">afficher_premiers</span>(T : <span class="kw-type">Tab</span>, n : <span class="kw-type">entier</span>)
+<span class="kw-algo">Début</span>
+    <span class="kw-algo">Pour</span> i <span class="kw-algo">de</span> <span class="kw-val">0</span> <span class="kw-algo">à</span> n-<span class="kw-val">1</span> <span class="kw-algo">Faire</span>
+        <span class="kw-algo">Si</span> Premier(T[i]) <span class="kw-algo">Alors</span>
+            <span class="kw-algo">Écrire</span>(T[i])
+        <span class="kw-algo">FinSi</span>
+    <span class="kw-algo">Fin Pour</span>
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-comment"># Réutiliser la fonction Premier(x)</span>
+<span class="py-kw">def</span> <span class="py-fn">afficher_premiers</span>(T, n):
+    <span class="py-kw">for</span> i <span class="py-kw">in</span> <span class="py-builtin">range</span>(n):
+        <span class="py-kw">if</span> Premier(T[i]):
+            <span class="py-builtin">print</span>(T[i])</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Q26 -->
+                <div class="checklist-item" data-id="26"
+                    data-help="Parcourir le tableau.|Compter les pairs consécutifs.|Afficher la séquence seulement si le compteur atteint au moins 2.|Réinitialiser le compteur lorsqu'un impair est rencontré.">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q26</span>Afficher les séquences de nombres
+                            pairs consécutifs dans un tableau t de taille n. <span
+                                class="difficulty hard">Difficile</span><br><mark>Remarque</mark> : une séquence n'est
+                            affichée que si elle contient au minimum deux nombres pairs successifs.</div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-comment">{ 1ère méthode : Tant que imbriqué + Écrire élément par élément }</span>
+<span class="kw-algo">Procédure</span> <span class="kw-fn">seq_pairs</span>(T : <span class="kw-type">Tab</span>, n : <span class="kw-type">entier</span>)
+<span class="kw-algo">Début</span>
+    i ← <span class="kw-val">0</span>
+    <span class="kw-algo">Tant que</span> i &lt; n <span class="kw-algo">Faire</span>
+        <span class="kw-algo">Si</span> T[i] <span class="kw-algo">Mod</span> <span class="kw-val">2</span> = <span class="kw-val">0</span> <span class="kw-algo">Alors</span>
+            debut ← i
+            cpt ← <span class="kw-val">0</span>
+            <span class="kw-algo">Tant que</span> (i &lt; n) <span class="kw-algo">Et</span> (T[i] <span class="kw-algo">Mod</span> <span class="kw-val">2</span> = <span class="kw-val">0</span>) <span class="kw-algo">Faire</span>
+                cpt ← cpt + <span class="kw-val">1</span>
+                i ← i + <span class="kw-val">1</span>
+            <span class="kw-algo">Fin Tant que</span>
+            <span class="kw-algo">Si</span> cpt ≥ <span class="kw-val">2</span> <span class="kw-algo">Alors</span>
+                <span class="kw-algo">Pour</span> j <span class="kw-algo">de</span> debut <span class="kw-algo">à</span> debut+cpt-<span class="kw-val">1</span> <span class="kw-algo">Faire</span>
+                    <span class="kw-algo">Écrire</span>(T[j])
+                <span class="kw-algo">Fin Pour</span>
+            <span class="kw-algo">FinSi</span>
+        <span class="kw-algo">Sinon</span>
+            i ← i + <span class="kw-val">1</span>
+        <span class="kw-algo">FinSi</span>
+    <span class="kw-algo">Fin Tant que</span>
+<span class="kw-algo">Fin</span>
+
+<span class="kw-comment">{ 2ème méthode : Pour + compteur nb + concaténation dans une chaîne }</span>
+<span class="kw-algo">Procédure</span> <span class="kw-fn">seq_pairs</span>(T : <span class="kw-type">Tab</span>, n : <span class="kw-type">entier</span>)
+<span class="kw-algo">Début</span>
+    seq ← <span class="kw-val">""</span>
+    nb ← <span class="kw-val">0</span>
+    <span class="kw-algo">Pour</span> i <span class="kw-algo">de</span> <span class="kw-val">0</span> <span class="kw-algo">à</span> n-<span class="kw-val">1</span> <span class="kw-algo">Faire</span>
+        <span class="kw-algo">Si</span> T[i] <span class="kw-algo">Mod</span> <span class="kw-val">2</span> = <span class="kw-val">0</span> <span class="kw-algo">Alors</span>
+            seq ← seq + Convch(T[i]) + <span class="kw-val">" "</span>
+            nb ← nb + <span class="kw-val">1</span>
+        <span class="kw-algo">Sinon</span>
+            <span class="kw-algo">Si</span> nb ≥ <span class="kw-val">2</span> <span class="kw-algo">Alors</span>
+                <span class="kw-algo">Écrire</span>(seq)
+            <span class="kw-algo">FinSi</span>
+            seq ← <span class="kw-val">""</span>
+            nb ← <span class="kw-val">0</span>
+        <span class="kw-algo">FinSi</span>
+    <span class="kw-algo">Fin Pour</span>
+    <span class="kw-algo">Si</span> nb ≥ <span class="kw-val">2</span> <span class="kw-algo">Alors</span>
+        <span class="kw-algo">Écrire</span>(seq)
+    <span class="kw-algo">FinSi</span>
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-comment"># 1ère méthode : while imbriqué + print élément par élément</span>
+<span class="py-kw">def</span> <span class="py-fn">seq_pairs</span>(T, n):
+    i = <span class="py-num">0</span>
+    <span class="py-kw">while</span> i &lt; n:
+        <span class="py-kw">if</span> T[i] % <span class="py-num">2</span> == <span class="py-num">0</span>:
+            debut = i
+            cpt = <span class="py-num">0</span>
+            <span class="py-kw">while</span> (i &lt; n) <span class="py-kw">and</span> (T[i] % <span class="py-num">2</span> == <span class="py-num">0</span>):
+                cpt = cpt + <span class="py-num">1</span>
+                i = i + <span class="py-num">1</span>
+            <span class="py-kw">if</span> cpt >= <span class="py-num">2</span>:
+                <span class="py-kw">for</span> j <span class="py-kw">in</span> <span class="py-builtin">range</span>(debut, debut+cpt):
+                    <span class="py-builtin">print</span>(T[j])
+        <span class="py-kw">else</span>:
+            i = i + <span class="py-num">1</span>
+
+<span class="py-comment"># 2ème méthode : for + compteur nb + concaténation dans une chaîne</span>
+<span class="py-kw">def</span> <span class="py-fn">seq_pairs</span>(T, n):
+    seq = <span class="py-str">""</span>
+    nb = <span class="py-num">0</span>
+    <span class="py-kw">for</span> i <span class="py-kw">in</span> <span class="py-builtin">range</span>(n):
+        <span class="py-kw">if</span> T[i] % <span class="py-num">2</span> == <span class="py-num">0</span>:
+            seq = seq + <span class="py-builtin">str</span>(T[i]) + <span class="py-str">" "</span>
+            nb = nb + <span class="py-num">1</span>
+        <span class="py-kw">else</span>:
+            <span class="py-kw">if</span> nb >= <span class="py-num">2</span>:
+                <span class="py-builtin">print</span>(seq)
+            seq = <span class="py-str">""</span>
+            nb = <span class="py-num">0</span>
+    <span class="py-kw">if</span> nb >= <span class="py-num">2</span>:
+        <span class="py-builtin">print</span>(seq)</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Q27 -->
+                <div class="checklist-item" data-id="27"
+                    data-help="Utiliser deux boucles imbriquées.|Accumuler la somme progressivement.|Tester si la somme = 0.">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q27</span>Afficher toutes les séquences
+                            d'éléments consécutifs dans un tableau t dont la somme des valeurs est égale à 0.<span
+                                class="difficulty hard">Difficile</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-algo">Procédure</span> <span class="kw-fn">seq_somme_zero</span>(T : <span class="kw-type">Tab</span>, n : <span class="kw-type">entier</span>)
+<span class="kw-algo">Début</span>
+    <span class="kw-algo">Pour</span> i <span class="kw-algo">de</span> <span class="kw-val">0</span> <span class="kw-algo">à</span> n-<span class="kw-val">2</span> <span class="kw-algo">Faire</span>
+        s ← T[i]
+        <span class="kw-algo">Pour</span> j <span class="kw-algo">de</span> i+<span class="kw-val">1</span> <span class="kw-algo">à</span> n-<span class="kw-val">1</span> <span class="kw-algo">Faire</span>
+            s ← s + T[j]
+            <span class="kw-algo">Si</span> s = <span class="kw-val">0</span> <span class="kw-algo">Alors</span>
+                <span class="kw-algo">Pour</span> k <span class="kw-algo">de</span> i <span class="kw-algo">à</span> j <span class="kw-algo">Faire</span>
+                    <span class="kw-algo">Écrire</span>(T[k])
+                <span class="kw-algo">Fin Pour</span>
+            <span class="kw-algo">FinSi</span>
+        <span class="kw-algo">Fin Pour</span>
+    <span class="kw-algo">Fin Pour</span>
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-kw">def</span> <span class="py-fn">seq_somme_zero</span>(T, n):
+    <span class="py-kw">for</span> i <span class="py-kw">in</span> <span class="py-builtin">range</span>(n-<span class="py-num">1</span>):
+        s = T[i]
+        <span class="py-kw">for</span> j <span class="py-kw">in</span> <span class="py-builtin">range</span>(i+<span class="py-num">1</span>, n):
+            s = s + T[j]
+            <span class="py-kw">if</span> s == <span class="py-num">0</span>:
+                <span class="py-kw">for</span> k <span class="py-kw">in</span> <span class="py-builtin">range</span>(i, j+<span class="py-num">1</span>):
+                    <span class="py-builtin">print</span>(T[k])</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== SECTION F ===== -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">F</span>
+                    Tri de tableaux
+                </h2>
+
+                <!-- Q28 -->
+                <div class="checklist-item" data-id="28"
+                    data-help="Comparer chaque élément avec le suivant.|Si dans le mauvais ordre, les échanger.|Répéter jusqu'à qu'aucun échange ne soit fait.">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q28</span>Tri à bulle d'un tableau d'entiers t
+                            de taille n <span class="difficulty medium">Moyen</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-comment">{ 1ère méthode : tri à bulles classique }</span>
+<span class="kw-algo">Procédure</span> <span class="kw-fn">Tri_Bulles</span>(@T : <span class="kw-type">Tab</span>, n : <span class="kw-type">entier</span>)
+<span class="kw-algo">Début</span>
+    <span class="kw-algo">Répéter</span>
+        Permut ← <span class="kw-val">Faux</span>
+        <span class="kw-algo">Pour</span> i <span class="kw-algo">de</span> <span class="kw-val">0</span> <span class="kw-algo">à</span> n-<span class="kw-val">2</span> <span class="kw-algo">Faire</span>
+            <span class="kw-algo">Si</span> T[i] &gt; T[i+<span class="kw-val">1</span>] <span class="kw-algo">Alors</span>
+                Aux ← T[i]
+                T[i] ← T[i+<span class="kw-val">1</span>]
+                T[i+<span class="kw-val">1</span>] ← Aux
+                Permut ← <span class="kw-val">Vrai</span>
+            <span class="kw-algo">FinSi</span>
+        <span class="kw-algo">Fin Pour</span>
+    <span class="kw-algo">Jusqu'à</span> (Permut = <span class="kw-val">Faux</span>)
+<span class="kw-algo">Fin</span>
+
+<span class="kw-comment">{ 2ème méthode : tri à bulles optimisé (n ← n-1 à chaque passe) }</span>
+<span class="kw-algo">Procédure</span> <span class="kw-fn">Tri_Bulles_Opt</span>(@T : <span class="kw-type">Tab</span>, n : <span class="kw-type">entier</span>)
+<span class="kw-algo">Début</span>
+    <span class="kw-algo">Répéter</span>
+        Permut ← <span class="kw-val">Faux</span>
+        <span class="kw-algo">Pour</span> i <span class="kw-algo">de</span> <span class="kw-val">0</span> <span class="kw-algo">à</span> n-<span class="kw-val">2</span> <span class="kw-algo">Faire</span>
+            <span class="kw-algo">Si</span> T[i] &gt; T[i+<span class="kw-val">1</span>] <span class="kw-algo">Alors</span>
+                Aux ← T[i]
+                T[i] ← T[i+<span class="kw-val">1</span>]
+                T[i+<span class="kw-val">1</span>] ← Aux
+                Permut ← <span class="kw-val">Vrai</span>
+            <span class="kw-algo">FinSi</span>
+        <span class="kw-algo">Fin Pour</span>
+        n ← n - <span class="kw-val">1</span>
+    <span class="kw-algo">Jusqu'à</span> (Permut = <span class="kw-val">Faux</span>) <span class="kw-algo">Ou</span> (n = <span class="kw-val">1</span>)
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-comment"># 1ère méthode : tri à bulles classique</span>
+<span class="py-kw">def</span> <span class="py-fn">Tri_Bulles</span>(T, n):
+    permut = <span class="py-kw">True</span>
+    <span class="py-kw">while</span> permut:
+        permut = <span class="py-kw">False</span>
+        <span class="py-kw">for</span> i <span class="py-kw">in</span> <span class="py-builtin">range</span>(n-<span class="py-num">1</span>):
+            <span class="py-kw">if</span> T[i] > T[i+<span class="py-num">1</span>]:
+                aux = T[i]
+                T[i] = T[i+<span class="py-num">1</span>]
+                T[i+<span class="py-num">1</span>] = aux
+                permut = <span class="py-kw">True</span>
+
+<span class="py-comment"># 2ème méthode : tri à bulles optimisé (n = n-1 à chaque passe)</span>
+<span class="py-kw">def</span> <span class="py-fn">Tri_Bulles_Opt</span>(T, n):
+    permut = <span class="py-kw">True</span>
+    <span class="py-kw">while</span> permut <span class="py-kw">and</span> n > <span class="py-num">1</span>:
+        permut = <span class="py-kw">False</span>
+        <span class="py-kw">for</span> i <span class="py-kw">in</span> <span class="py-builtin">range</span>(n-<span class="py-num">1</span>):
+            <span class="py-kw">if</span> T[i] > T[i+<span class="py-num">1</span>]:
+                aux = T[i]
+                T[i] = T[i+<span class="py-num">1</span>]
+                T[i+<span class="py-num">1</span>] = aux
+                permut = <span class="py-kw">True</span>
+        n = n - <span class="py-num">1</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Q29 -->
+                <div class="checklist-item" data-id="29"
+                    data-help="Trouver le maximum dans la partie non triée.|Échanger avec l'élément en position i.|Répéter pour chaque position.">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q29</span>Tri par sélection décroissant d'un
+                            tableau d'entiers t de taille n <span class="difficulty medium">Moyen</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-algo">Procédure</span> <span class="kw-fn">Tri_Selection_Dec</span>(@T : <span class="kw-type">Tab</span>, n : <span class="kw-type">entier</span>)
+<span class="kw-algo">Début</span>
+    <span class="kw-algo">Pour</span> i <span class="kw-algo">de</span> <span class="kw-val">0</span> <span class="kw-algo">à</span> n-<span class="kw-val">2</span> <span class="kw-algo">Faire</span>
+        posmax ← i
+        <span class="kw-algo">Pour</span> j <span class="kw-algo">de</span> i+<span class="kw-val">1</span> <span class="kw-algo">à</span> n-<span class="kw-val">1</span> <span class="kw-algo">Faire</span>
+            <span class="kw-algo">Si</span> T[j] &gt; T[posmax] <span class="kw-algo">Alors</span>
+                posmax ← j
+            <span class="kw-algo">FinSi</span>
+        <span class="kw-algo">Fin Pour</span>
+        <span class="kw-algo">Si</span> posmax ≠ i <span class="kw-algo">Alors</span>
+            Aux ← T[i]
+            T[i] ← T[posmax]
+            T[posmax] ← Aux
+        <span class="kw-algo">FinSi</span>
+    <span class="kw-algo">Fin Pour</span>
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-kw">def</span> <span class="py-fn">Tri_Selection_Dec</span>(T, n):
+    <span class="py-kw">for</span> i <span class="py-kw">in</span> <span class="py-builtin">range</span>(n-<span class="py-num">1</span>):
+        posmax = i
+        <span class="py-kw">for</span> j <span class="py-kw">in</span> <span class="py-builtin">range</span>(i+<span class="py-num">1</span>, n):
+            <span class="py-kw">if</span> T[j] > T[posmax]:
+                posmax = j
+        <span class="py-kw">if</span> posmax != i:
+            aux = T[i]
+            T[i] = T[posmax]
+            T[posmax] = aux</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Q30 -->
+                <div class="checklist-item" data-id="30"
+                    data-help="Parcourir le tableau et comparer la longueur des chaînes.|Échanger si la suivante est plus longue.|Répéter jusqu'à tri complet du plus long au plus court.">
+                    <div class="item-header">
+                        <div class="checkbox"><span class="checkmark">✓</span><span class="failmark">!</span></div>
+                        <div class="item-text"><span class="item-number">Q30</span>Trier un tableau t de chaînes de
+                            taille n selon la longueur des chaînes (de la plus longue à la plus courte).<span
+                                class="difficulty hard">Difficile</span></div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="action-btn btn-success">✓ Réussi</button>
+                        <button class="action-btn btn-warning">! Échoué</button>
+                        <button class="action-btn btn-help">💡 Aide</button>
+                        <button class="action-btn btn-algo">📐 Algorithme</button>
+                        <button class="action-btn btn-python">🐍 Python</button>
+                    </div>
+                    <div class="help-section"></div>
+                    <div class="algo-section">
+                        <div class="corrige-panel algo-panel">
+                            <div class="corrige-header">📐 Corrigé — Algorithme<button class="copy-btn">📋
+                                    Copier</button></div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="kw-algo">Procédure</span> <span class="kw-fn">Tri_Long_Dec</span>(@T : <span class="kw-type">Tab</span>, n : <span class="kw-type">entier</span>)
+<span class="kw-algo">Début</span>
+    <span class="kw-algo">Pour</span> i <span class="kw-algo">de</span> <span class="kw-val">0</span> <span class="kw-algo">à</span> n-<span class="kw-val">2</span> <span class="kw-algo">Faire</span>
+        posmax ← i
+        <span class="kw-algo">Pour</span> j <span class="kw-algo">de</span> i+<span class="kw-val">1</span> <span class="kw-algo">à</span> n-<span class="kw-val">1</span> <span class="kw-algo">Faire</span>
+            <span class="kw-algo">Si</span> Long(T[j]) &gt; Long(T[posmax]) <span class="kw-algo">Alors</span>
+                posmax ← j
+            <span class="kw-algo">FinSi</span>
+        <span class="kw-algo">Fin Pour</span>
+        <span class="kw-algo">Si</span> posmax ≠ i <span class="kw-algo">Alors</span>
+            Aux ← T[i]
+            T[i] ← T[posmax]
+            T[posmax] ← Aux
+        <span class="kw-algo">FinSi</span>
+    <span class="kw-algo">Fin Pour</span>
+<span class="kw-algo">Fin</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="python-section">
+                        <div class="corrige-panel python-panel">
+                            <div class="corrige-header">🐍 Corrigé — Python<button class="copy-btn">📋 Copier</button>
+                            </div>
+                            <div class="corrige-body">
+                                <pre class="code-block"><span class="py-kw">def</span> <span class="py-fn">Tri_Long_Dec</span>(T, n):
+    <span class="py-kw">for</span> i <span class="py-kw">in</span> <span class="py-builtin">range</span>(n-<span class="py-num">1</span>):
+        posmax = i
+        <span class="py-kw">for</span> j <span class="py-kw">in</span> <span class="py-builtin">range</span>(i+<span class="py-num">1</span>, n):
+            <span class="py-kw">if</span> <span class="py-builtin">len</span>(T[j]) > <span class="py-builtin">len</span>(T[posmax]):
+                posmax = j
+        <span class="py-kw">if</span> posmax != i:
+            aux = T[i]
+            T[i] = T[posmax]
+            T[posmax] = aux</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="note-section">
+                        <div class="note-label">📝 Remarque pour révision :</div>
+                        <textarea class="note-input" placeholder="Notez ce que vous devez retravailler..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tips-section">
+                <div class="tips-title">💡 Conseils de révision</div>
+                <ul>
+                    <li><strong>Objectif quotidien : 5 compétences minimum</strong> - planifiez vos sessions de révision
+                    </li>
+                    <li><strong>Utilisez le bouton 💡 Aide</strong> pour un flash d'idées quand vous êtes bloqué</li>
+                    <li><strong>Consultez 📐 Algorithme et 🐍 Python</strong> uniquement après avoir essayé par
+                        vous-même</li>
+                    <li><strong>Marquez "Échoué" sans hésitation</strong> - c'est pour apprendre ! Notez pourquoi</li>
+                    <li><strong>Révisez d'abord les compétences échouées</strong> avant de passer aux suivantes</li>
+                    <li><strong>Score sur 30</strong> - chaque question réussie = 1 point</li>
+                    <li><strong>Écrivez le code à la main</strong> avant de le tester sur ordinateur</li>
+                </ul>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-secondary" id="resetBtn">🔄 Réinitialiser</button>
+                <button class="btn btn-primary" id="printBtn">🖨️ Imprimer</button>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© <span id="currentYear"></span> A.B.N Academy - Anis Ben Nacib</p>
+            <p class="footer-subtitle">Tous droits réservés</p>
+        </div>
+    </div>
+
+    <script>
+        const items = {};
+        const notes = {};
+        const totalItems = 30;
+        let dailyCount = 0;
+        const helpData = {};
+
+        function getTodayKey() {
+            return new Date().toDateString();
+        }
+
+        function loadProgress() {
+            const saved = JSON.parse(localStorage.getItem('algoProgress') || '{}');
+            const savedNotes = JSON.parse(localStorage.getItem('algoNotes') || '{}');
+            const dailyData = JSON.parse(localStorage.getItem('algoDailyProgress') || '{}');
+            const today = getTodayKey();
+            dailyCount = dailyData[today] || 0;
+
+            document.querySelectorAll('.checklist-item').forEach(item => {
+                const id = item.dataset.id;
+                const status = saved[id] || 'none';
+                items[id] = status;
+                notes[id] = savedNotes[id] || '';
+
+                const helpText = item.dataset.help || '';
+                if (helpText) helpData[id] = helpText.split('|');
+
+                if (status === 'checked') {
+                    item.classList.add('checked');
+                } else if (status === 'failed') {
+                    item.classList.add('failed');
+                    const noteSection = item.querySelector('.note-section');
+                    if (notes[id]) {
+                        noteSection.classList.add('show');
+                        noteSection.querySelector('.note-input').value = notes[id];
+                    }
+                }
+            });
+            updateProgress();
+        }
+
+        function saveProgress() {
+            localStorage.setItem('algoProgress', JSON.stringify(items));
+            localStorage.setItem('algoNotes', JSON.stringify(notes));
+            const dailyData = JSON.parse(localStorage.getItem('algoDailyProgress') || '{}');
+            dailyData[getTodayKey()] = dailyCount;
+            localStorage.setItem('algoDailyProgress', JSON.stringify(dailyData));
+        }
+
+        function updateProgress() {
+            const completed = Object.values(items).filter(v => v === 'checked').length;
+            const failed = Object.values(items).filter(v => v === 'failed').length;
+            const percentage = Math.round((completed / totalItems) * 100);
+
+            document.getElementById('scoreDisplay').textContent = completed;
+            document.getElementById('completedCount').textContent = completed;
+            document.getElementById('failedCount').textContent = failed;
+            document.getElementById('dailyGoal').textContent = dailyCount + '/5';
+
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = percentage + '%';
+
+            const goalBanner = document.getElementById('goalBanner');
+            goalBanner.style.display = dailyCount >= 5 ? 'block' : 'none';
+        }
+
+        function displayHelp(id, helpSection) {
+            const helpTexts = helpData[id] || [];
+            if (helpTexts.length === 0) {
+                helpSection.innerHTML = '<div class="help-title">💡 Indice :</div><div class="help-content">Aucune aide disponible.</div>';
+                return;
+            }
+            let html = '<div class="help-title">💡 Indice :</div><div class="help-content"><ul>';
+            helpTexts.forEach(text => { html += `<li>${text}</li>`; });
+            html += '</ul></div>';
+            helpSection.innerHTML = html;
+        }
+
+        document.querySelectorAll('.checklist-item').forEach(item => {
+            const id = item.dataset.id;
+            const buttons = item.querySelectorAll('.action-btn');
+            const successBtn = buttons[0];
+            const failBtn = buttons[1];
+            const helpBtn = buttons[2];
+            const algoBtn = buttons[3];
+            const pythonBtn = buttons[4];
+            const noteSection = item.querySelector('.note-section');
+            const textarea = noteSection.querySelector('.note-input');
+            const helpSection = item.querySelector('.help-section');
+            const algoSection = item.querySelector('.algo-section');
+            const pythonSection = item.querySelector('.python-section');
+
+            successBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                const wasUntouched = items[id] === 'none' || !items[id];
+                items[id] = 'checked';
+                item.classList.remove('failed');
+                item.classList.add('checked');
+                noteSection.classList.remove('show');
+                helpSection.classList.remove('show');
+                notes[id] = '';
+                textarea.value = '';
+                if (wasUntouched) dailyCount++;
+                saveProgress();
+                updateProgress();
+            });
+
+            failBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                const wasUntouched = items[id] === 'none' || !items[id];
+                items[id] = 'failed';
+                item.classList.remove('checked');
+                item.classList.add('failed');
+                noteSection.classList.add('show');
+                textarea.focus();
+                if (wasUntouched) dailyCount++;
+                saveProgress();
+                updateProgress();
+            });
+
+            if (helpBtn && helpSection) {
+                helpBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    if (!helpSection.classList.contains('show')) displayHelp(id, helpSection);
+                    helpSection.classList.toggle('show');
+                });
+            }
+
+            if (algoBtn && algoSection) {
+                algoBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    algoSection.classList.toggle('show');
+                });
+            }
+
+            if (pythonBtn && pythonSection) {
+                pythonBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    pythonSection.classList.toggle('show');
+                });
+            }
+
+            textarea.addEventListener('input', function () {
+                notes[id] = this.value;
+                saveProgress();
+            });
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', function () {
+            if (confirm('Êtes-vous sûr de vouloir réinitialiser toute votre progression ?')) {
+                document.querySelectorAll('.checklist-item').forEach(item => {
+                    const id = item.dataset.id;
+                    items[id] = 'none';
+                    notes[id] = '';
+                    item.classList.remove('checked', 'failed');
+                    item.querySelector('.note-section').classList.remove('show');
+                    item.querySelector('.help-section').classList.remove('show');
+                    item.querySelector('.algo-section').classList.remove('show');
+                    item.querySelector('.python-section').classList.remove('show');
+                    item.querySelector('.note-input').value = '';
+                });
+                dailyCount = 0;
+                saveProgress();
+                updateProgress();
+            }
+        });
+
+        document.getElementById('printBtn').addEventListener('click', function () {
+            window.print();
+        });
+
+        // ===== BOUTON COPIER =====
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                const pre = this.closest('.corrige-panel').querySelector('pre.code-block');
+                const text = pre ? pre.innerText : '';
+                navigator.clipboard.writeText(text).then(() => {
+                    const orig = this.textContent;
+                    this.textContent = '✅ Copié !';
+                    this.classList.add('copied');
+                    setTimeout(() => {
+                        this.textContent = orig;
+                        this.classList.remove('copied');
+                    }, 1800);
+                }).catch(() => {
+                    // Fallback si clipboard API non dispo
+                    const ta = document.createElement('textarea');
+                    ta.value = text;
+                    ta.style.position = 'fixed';
+                    ta.style.opacity = '0';
+                    document.body.appendChild(ta);
+                    ta.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(ta);
+                    const orig = this.textContent;
+                    this.textContent = '✅ Copié !';
+                    this.classList.add('copied');
+                    setTimeout(() => {
+                        this.textContent = orig;
+                        this.classList.remove('copied');
+                    }, 1800);
+                });
+            });
+        });
+
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        loadProgress();
+    </script>
+</body>
+
+</html>
